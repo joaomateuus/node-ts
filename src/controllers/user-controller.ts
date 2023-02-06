@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({rejectOnNotFound: true})
 
 export class UserController {
     async createUser(_req: Request, _res: Response) {
@@ -33,6 +33,23 @@ export class UserController {
             return _res.status(201).json({user})
         } catch (error) {
             _res.status(400).json({error})
+        }
+    }
+    async loginUser(_req: Request, _res: Response){
+        try {
+            const { email, password } = _req.body;
+            const user = await prisma.user.findUnique({where: {email}})
+            if (!user) {
+                _res.status(400).json({message: "Email or password are incorrect"})
+            }
+            
+            const checkPassword = await bcrypt.compare(password, user.password)
+            if (!checkPassword){
+                _res.status(400).json({message: "Email or password are incorrect"})
+            }
+
+        } catch (error) {
+            
         }
     }
 }

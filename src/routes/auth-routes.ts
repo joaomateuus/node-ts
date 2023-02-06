@@ -5,7 +5,7 @@ import { UserController } from "../controllers/user-controller"
 const router = express.Router();
 const userController = new UserController;
 
-router.post("/registrar", userController.createUser);
+router.post("/signup", userController.createUser);
 router.post("/login");
 router.get("/home");
 
