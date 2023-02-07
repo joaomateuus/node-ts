@@ -8,11 +8,8 @@ export class UserController {
     async createUser(_req: Request, _res: Response) {
         try {
             const { email, username, password, password_confirm } = _req.body;
-            const userExists = await prisma.user.findUnique({
-                where: {
-                    email: email
-                }
-            })
+            const userExists = await prisma.user.findFirst({where: {email: email}})
+            
             if (userExists) {
                 return _res.status(400).json({message: "User already exists"})
             }
@@ -38,18 +35,18 @@ export class UserController {
     async loginUser(_req: Request, _res: Response){
         try {
             const { email, password } = _req.body;
-            const user = await prisma.user.findUnique({where: {email}})
+            const user = await prisma.user.findFirst({where: {email}})
+            
             if (!user) {
                 _res.status(400).json({message: "Email or password are incorrect"})
             }
-            
             const checkPassword = await bcrypt.compare(password, user.password)
             if (!checkPassword){
                 _res.status(400).json({message: "Email or password are incorrect"})
             }
 
         } catch (error) {
-            
+            _res.status(400).json({error})
         }
     }
 }
