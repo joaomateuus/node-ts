@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { UserService } from "../services/create-user-service";
-import { User } from "../interfaces/User";
-import { Prisma } from "@prisma/client";
+import { UserService } from "../services/user-service";
 
 const userService = new UserService
 
@@ -14,22 +12,14 @@ export class UserController {
             return _res.status(400).json({error})
         }
     }
-
-    // async loginUser(_req: Request, _res: Response){
-    //     try {
-    //         const { email, password } = _req.body;
-    //         const user = await prisma.user.findFirst({where: {email}})
-            
-    //         if (!user) {
-    //             _res.status(400).json({message: "Email or password are incorrect"})
-    //         }
-    //         const checkPassword = await bcrypt.compare(password, user.password)
-    //         if (!checkPassword){
-    //             _res.status(400).json({message: "Email or password are incorrect"})
-    //         }
-
-    //     } catch (error) {
-    //         _res.status(400).json({error})
-    //     }
-    // }
+    
+    async loginUser(_req: Request, _res: Response): Promise<Response>{
+        try {
+            const { email, password } = _req.body;
+            const tokens = await userService.loginUser(email, password);
+            return _res.status(200).json(tokens)
+        } catch (error) {
+            return _res.status(400).json({error})
+        }
+    }
 }
