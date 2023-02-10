@@ -21,18 +21,17 @@ export class RefreshTokenService {
         const token = await generateTokenProvider.generateToken();
 
         const refreshTokenExpired = dayjs().isAfter(dayjs.unix(refreshToken.expiresIn));
+        
         if (refreshTokenExpired) {
             await prisma.refreshToken.deleteMany({
                 where: {
                     userId: refreshToken.userId
                 }
             });
-
             const refreshTokenProvider = new GenerateRefreshTokenProvider;
-            const newRefreshToken = refreshTokenProvider.generateRefreshToken(refreshToken.userId);
+            const newRefreshToken = await refreshTokenProvider.generateRefreshToken(refreshToken.userId);
             return { token, refresh_token: newRefreshToken }
         }
-        
-        return token;
+        return {token: token};
     }
 }
