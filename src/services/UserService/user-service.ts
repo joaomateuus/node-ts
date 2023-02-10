@@ -34,19 +34,17 @@ export class UserService {
 
     async loginUser(email: string, password: string) {
         const user = await prisma.user.findFirst({where: {email}});
-        
         if (!user) {
             throw new Error( "Email or password are incorrect")
         }
         
         const checkPassword = await bcrypt.compare(password, user.password)
-        
         if (!checkPassword) {
             throw new Error ("Email or password are incorrect")
         } 
         
         const tokenProvider = new GenerateTokenProvider;
-        const token = await tokenProvider.generateToken();
+        const token = await tokenProvider.generateToken(user.id);
         
         await prisma.refreshToken.deleteMany({
             where: {

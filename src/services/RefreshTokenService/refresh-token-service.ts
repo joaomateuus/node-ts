@@ -18,7 +18,7 @@ export class RefreshTokenService {
         }
 
         const generateTokenProvider = new GenerateTokenProvider;
-        const token = await generateTokenProvider.generateToken();
+        const token = await generateTokenProvider.generateToken(refreshToken.userId);
 
         const refreshTokenExpired = dayjs().isAfter(dayjs.unix(refreshToken.expiresIn));
         

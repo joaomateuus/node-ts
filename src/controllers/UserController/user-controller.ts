@@ -22,4 +22,8 @@ export class UserController {
             return _res.status(400).json({error})
         }
     }
+
+    async home(_req: Request, _res: Response){
+        _res.send("User authorized sucessfully")
+    }
 }
