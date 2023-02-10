@@ -1,5 +1,4 @@
 import express from "express";
-import {  Request, Response } from "express";
 import { RefreshTokenController } from "../controllers/RefreshTokenController/refresh-token-controller";
 import { UserController } from "../controllers/UserController/user-controller"
 import { authMiddleware } from "../middleware/auth-middleware";
