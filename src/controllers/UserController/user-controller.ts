@@ -16,8 +16,8 @@ export class UserController {
     async loginUser(_req: Request, _res: Response): Promise<Response>{
         try {
             const { email, password } = _req.body;
-            const tokens = await userService.loginUser(email, password);
-            return _res.status(200).json(tokens)
+            const data = await userService.loginUser(email, password);
+            return _res.status(200).json(data)
         } catch (error) {
             return _res.status(400).json({error})
         }

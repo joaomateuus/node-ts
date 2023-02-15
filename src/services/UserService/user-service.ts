@@ -55,7 +55,7 @@ export class UserService {
         const refreshTokenProvider = new GenerateRefreshTokenProvider; 
         const refresh_token = await refreshTokenProvider.generateRefreshToken(user.id)
             
-        return { token, refresh_token } 
+        return { email: user.email, token:token, refresh_token: refresh_token } 
     }
 
 

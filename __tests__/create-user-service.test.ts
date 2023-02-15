@@ -1,10 +1,16 @@
+import { User } from "../src/interfaces/User";
 import { UserService } from "../src/services/UserService/user-service";
 
-const userService = new UserService;
-
 describe("Create user", () => {
-    it("It must be possible create an user", () => {
-        //code
-        expect(2 + 2).toBe(4)
+    it("should be able to create an user", async () => {
+        const userService = new UserService;
+        const userData: User = {
+            username: "joao",
+            email: "joao@email.com",
+            password: "teste123"
+        }
+
+        const user = await userService.createUser(userData)
+        expect(user).toHaveProperty("id")
     })
 })
